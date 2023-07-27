@@ -12,14 +12,15 @@ modalClose.addEventListener('click', () => {
 	modal.style.display = 'none'
 })
 
-console.log('текст поиска: ');
-let val = ''
-setInterval(() => {
-	if (val != modalInput.value) {
-		val = modalInput.value
-		console.log(val);
-	}else{
-		return
-	}
-	//console.log(val);
-}, 500)
+modalInput.addEventListener('input', () => {
+	console.log(modalInput.value);
+})
+// let val = ''
+// setInterval(() => {
+// 	if (val != modalInput.value) {
+// 		val = modalInput.value
+// 		console.log(val);
+// 	}else{
+// 		return
+// 	}
+// }, 500)
