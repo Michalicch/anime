@@ -1,8 +1,8 @@
 const mainData = () => {
 
 	const renderAnimeList = (array, ganres) => {
-		console.log(array);
-		console.log(ganres);
+		//console.log(array);
+		//console.log(ganres);
 	}
 
 	const rendorTopAnime = (array, ganres) => {
@@ -21,7 +21,7 @@ const mainData = () => {
 			`
 			);
 		});
-		wrapper.querySelectorAll('.set-bg').forEach((elem) => {		
+		wrapper.querySelectorAll('.set-bg').forEach((elem) => {
 			elem.style.backgroundImage = `url(${elem.dataset.setbg})`
 		});
 	}
@@ -41,7 +41,7 @@ const mainData = () => {
 			data.forEach((item) => {
 				ganres.add(item.ganre)
 			})
-			
+
 			renderAnimeList(data, ganres)
 		})
 }
