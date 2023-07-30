@@ -8,6 +8,20 @@ const modal = () => {
 	wrapper.style.width = '100%'
 	wrapper.style.maxWidth = '500px'
 
+	//патерн отложенной оправки запроса (чтоб не перегружать сервер запросами)
+	//-------------------------------------------
+	const debounce = (func, ms = 500) => {
+		let timer
+		return (...args) => {
+			clearTimeout(timer)
+			timer = setTimeout(() =>{func.apply(this, args)}, ms)
+		}
+	}
+
+	const searchDebounce = debounce((searchString) => {
+		searchFunc(searchString);
+	}, 800)
+	// -----------------------------------------
 	const renderFunc = (items) => {
 		wrapper.innerHTML = ''
 
@@ -44,8 +58,8 @@ const modal = () => {
 		wrapper.innerHTML = ''
 	})
 
-	searchInput.addEventListener('input', (event) => {
-		searchFunc(event.target.value);
+	searchInput.addEventListener('input', (event) => {		
+		searchDebounce(event.target.value); //функция оптимизирующего патерна ------------
 	})
 }
 
