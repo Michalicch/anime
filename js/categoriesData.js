@@ -1,8 +1,8 @@
-const mainData = () => {
-	const preloader = document.querySelector('.preloder')	//класс active добавлен в верстку поэтому он сразу запускается при переходе на страницу и ниже мы его выключаем строка 73-75 
+const categoriesData = () => {
+	const preloader = document.querySelector('.preloder')
 
 	const renderGanreList = (ganres) => {
-		const dropdownBlok = document.querySelector('.header__menu .dropdown')	
+		const dropdownBlok = document.querySelector('.header__menu .dropdown')
 
 		ganres.forEach(ganre => {
 			dropdownBlok.insertAdjacentHTML('beforeend', `
@@ -12,12 +12,12 @@ const mainData = () => {
 	}
 
 	const renderAnimeList = (array, ganres) => {
-		const wrapper = document.querySelector('.product .col-lg-8')		
+		const wrapper = document.querySelector('.product-page .col-lg-8')
 
 		ganres.forEach((ganre) => {
 			const productBlock = document.createElement('div')
 			const listBlock = document.createElement('div')
-			const list = array.filter(item => item.ganre === ganre)
+			const list = array.filter(item => item.tags.includes(ganre))
 
 			listBlock.classList.add('row')
 			productBlock.classList.add('mb-5')
@@ -71,14 +71,15 @@ const mainData = () => {
 		})
 
 		setTimeout(() => {
-			preloader.classList.remove('active') //выключаем preloader
+			preloader.classList.remove('active')
 		}, 100);
 	}
 
 	const rendorTopAnime = (array, ganres) => {
 		const wrapper = document.querySelector('.filter__gallery')
 
-		array.forEach((item) => {			
+		array.forEach((item) => {
+			//console.log(item);
 			wrapper.insertAdjacentHTML('beforeend', `
 				<div class="product__sidebar__view__item set-bg mix"
 					data-setbg="${item.image}">
@@ -94,21 +95,28 @@ const mainData = () => {
 		});
 	}
 
+
 	//fetch('./db.json') // Получение данных из локального файла
 	fetch('https://anime-db-19882-default-rtdb.firebaseio.com/anime.json') // Получение данных из Firebase по сети
 		.then((response) => response.json())
 		.then((data) => {
 
-			const ganres = new Set()			
+			const ganres = new Set()
+			const ganreParams = new URLSearchParams(window.location.search).get('ganre')
 
 			data.forEach((item) => {
 				ganres.add(item.ganre)
 			})
 
 			rendorTopAnime(data.sort((a, b) => b.views - a.views).slice(0, 5)); //меняя местами a и b изменяем направление сортировки
-			renderAnimeList(data, ganres)
+			if (ganreParams) {
+				renderAnimeList(data, [ganreParams])
+			} else {
+				renderAnimeList(data, ganres)
+			}
+
 			renderGanreList(ganres)
 		})
 }
 
-mainData()
+categoriesData()
